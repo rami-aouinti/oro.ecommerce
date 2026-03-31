@@ -1,0 +1,103 @@
+datagrids:
+    rami-academy-ticket-grid:
+        extended_entity_name: Rami\Bundle\AcademyBundle\Entity\Ticket
+        source:
+            type: orm
+            query:
+                select:
+                    - t.id
+                    - t.subject
+                    - t.status
+                    - t.priority
+                    - t.createdAt
+                    - CONCAT(assignedTo.firstName, ' ', assignedTo.lastName) as assignedTo
+                from:
+                    - { table: Rami\Bundle\AcademyBundle\Entity\Ticket, alias: t }
+                join:
+                    left:
+                        - { join: t.assignedTo, alias: assignedTo }
+        columns:
+            subject:
+                label: rami.academy.ticket.subject.label
+            status:
+                label: rami.academy.ticket.status.label
+            priority:
+                label: rami.academy.ticket.priority.label
+            createdAt:
+                label: rami.academy.ticket.created_at.label
+                frontend_type: datetime
+            assignedTo:
+                label: rami.academy.ticket.assigned_to.label
+        sorters:
+            columns:
+                subject:
+                    data_name: t.subject
+                status:
+                    data_name: t.status
+                priority:
+                    data_name: t.priority
+                createdAt:
+                    data_name: t.createdAt
+                assignedTo:
+                    data_name: assignedTo.lastName
+            default:
+                createdAt: DESC
+        filters:
+            columns:
+                status:
+                    type: choice
+                    data_name: t.status
+                    options:
+                        field_options:
+                            choices:
+                                New: new
+                                In progress: in_progress
+                                Resolved: resolved
+                                Closed: closed
+                priority:
+                    type: choice
+                    data_name: t.priority
+                    options:
+                        field_options:
+                            choices:
+                                Low: low
+                                Medium: medium
+                                High: high
+                                Urgent: urgent
+                assignedTo:
+                    type: string
+                    data_name: assignedTo.lastName
+                createdAt:
+                    type: datetime
+                    data_name: t.createdAt
+        properties:
+            id: ~
+            view_link:
+                type: url
+                route: oro_rami_academy_ticket_view
+                params: [ id ]
+            update_link:
+                type: url
+                route: oro_rami_academy_ticket_update
+                params: [ id ]
+            delete_link:
+                type: url
+                route: oro_rami_academy_ticket_delete
+                params: [ id ]
+        actions:
+            view:
+                type: navigate
+                label: oro.grid.action.view
+                icon: eye
+                link: view_link
+                rowAction: true
+            update:
+                type: navigate
+                label: oro.grid.action.update
+                icon: edit
+                link: update_link
+            delete:
+                type: delete
+                label: oro.grid.action.delete
+                icon: trash
+                link: delete_link
