@@ -4,12 +4,36 @@ namespace Rami\Bundle\AcademyBundle\Entity;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'rami_academy_ticket')]
 #[ORM\HasLifecycleCallbacks]
+#[Config(defaultValues: [
+    'entity' => [
+        'label' => 'rami.academy.ticket.entity_label',
+        'plural_label' => 'rami.academy.ticket.entity_plural_label',
+        'description' => 'rami.academy.ticket.entity_description',
+        'icon' => 'fa-ticket',
+    ],
+    'ownership' => [
+        'owner_type' => 'BUSINESS_UNIT',
+        'owner_field_name' => 'owner',
+        'owner_column_name' => 'owner_id',
+        'organization_field_name' => 'organization',
+        'organization_column_name' => 'organization_id',
+    ],
+    'security' => [
+        'type' => 'ACL',
+    ],
+    'search' => [
+        'searchable' => true,
+    ],
+])]
 class Ticket
 {
     public const STATUS_NEW = 'new';
@@ -28,26 +52,90 @@ class Ticket
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[ConfigField(defaultValues: [
+        'entity' => [
+            'label' => 'rami.academy.ticket.subject.label',
+            'description' => 'rami.academy.ticket.subject.description',
+        ],
+        'search' => [
+            'searchable' => true,
+        ],
+    ])]
     private ?string $subject = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[ConfigField(defaultValues: [
+        'entity' => [
+            'label' => 'rami.academy.ticket.description.label',
+            'description' => 'rami.academy.ticket.description.description',
+        ],
+        'search' => [
+            'searchable' => true,
+        ],
+    ])]
     private ?string $description = null;
 
     #[ORM\Column(type: 'string', length: 32)]
+    #[ConfigField(defaultValues: [
+        'entity' => [
+            'label' => 'rami.academy.ticket.status.label',
+            'description' => 'rami.academy.ticket.status.description',
+        ],
+        'search' => [
+            'searchable' => true,
+        ],
+    ])]
     private string $status = self::STATUS_NEW;
 
     #[ORM\Column(type: 'string', length: 32)]
+    #[ConfigField(defaultValues: [
+        'entity' => [
+            'label' => 'rami.academy.ticket.priority.label',
+            'description' => 'rami.academy.ticket.priority.description',
+        ],
+        'search' => [
+            'searchable' => true,
+        ],
+    ])]
     private string $priority = self::PRIORITY_MEDIUM;
 
     #[ORM\Column(name: 'created_at', type: 'datetime_immutable')]
+    #[ConfigField(defaultValues: [
+        'entity' => [
+            'label' => 'rami.academy.ticket.created_at.label',
+            'description' => 'rami.academy.ticket.created_at.description',
+        ],
+    ])]
     private ?DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToOne(targetEntity: BusinessUnit::class)]
     #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL', nullable: true)]
+    #[ConfigField(defaultValues: [
+        'entity' => [
+            'label' => 'rami.academy.ticket.owner.label',
+            'description' => 'rami.academy.ticket.owner.description',
+        ],
+    ])]
     private ?BusinessUnit $owner = null;
+
+    #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(name: 'organization_id', referencedColumnName: 'id', onDelete: 'SET NULL', nullable: true)]
+    #[ConfigField(defaultValues: [
+        'entity' => [
+            'label' => 'rami.academy.ticket.organization.label',
+            'description' => 'rami.academy.ticket.organization.description',
+        ],
+    ])]
+    private ?Organization $organization = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'assigned_to_id', referencedColumnName: 'id', onDelete: 'SET NULL', nullable: true)]
+    #[ConfigField(defaultValues: [
+        'entity' => [
+            'label' => 'rami.academy.ticket.assigned_to.label',
+            'description' => 'rami.academy.ticket.assigned_to.description',
+        ],
+    ])]
     private ?User $assignedTo = null;
 
     public function getId(): ?int
@@ -123,6 +211,18 @@ class Ticket
     public function setOwner(?BusinessUnit $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getOrganization(): ?Organization
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(?Organization $organization): self
+    {
+        $this->organization = $organization;
 
         return $this;
     }

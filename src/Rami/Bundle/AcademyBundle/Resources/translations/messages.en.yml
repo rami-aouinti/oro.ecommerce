@@ -1,0 +1,30 @@
+rami:
+  academy:
+    ticket:
+      entity_label: Ticket
+      entity_plural_label: Tickets
+      entity_description: Business support ticket handled from back-office.
+      subject:
+        label: Subject
+        description: Short summary shown in ticket grids and forms.
+      description:
+        label: Description
+        description: Detailed business context for the support request.
+      status:
+        label: Status
+        description: Current lifecycle state of the ticket.
+      priority:
+        label: Priority
+        description: Business urgency used for sorting and triage.
+      created_at:
+        label: Created at
+        description: Date and time when the ticket was created.
+      owner:
+        label: Owner business unit
+        description: Business unit that owns the ticket record.
+      organization:
+        label: Organization
+        description: Organization scope used by Oro access control.
+      assigned_to:
+        label: Assigned to
+        description: User currently responsible for processing the ticket.
