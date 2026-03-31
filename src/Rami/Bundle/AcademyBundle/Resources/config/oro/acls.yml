@@ -1,0 +1,28 @@
+acls:
+    oro_rami_academy_ticket_view:
+        type: entity
+        class: Rami\Bundle\AcademyBundle\Entity\Ticket
+        permission: VIEW
+        group_name: ""
+        category: application
+
+    oro_rami_academy_ticket_create:
+        type: entity
+        class: Rami\Bundle\AcademyBundle\Entity\Ticket
+        permission: CREATE
+        group_name: ""
+        category: application
+
+    oro_rami_academy_ticket_edit:
+        type: entity
+        class: Rami\Bundle\AcademyBundle\Entity\Ticket
+        permission: EDIT
+        group_name: ""
+        category: application
+
+    oro_rami_academy_ticket_delete:
+        type: entity
+        class: Rami\Bundle\AcademyBundle\Entity\Ticket
+        permission: DELETE
+        group_name: ""
+        category: application
