@@ -12,11 +12,15 @@ datagrids:
                     - t.priority
                     - t.createdAt
                     - CONCAT(assignedTo.firstName, ' ', assignedTo.lastName) as assignedTo
+                    - CONCAT(contact.firstName, ' ', contact.lastName) as contact
+                    - account.name as account
                 from:
                     - { table: Rami\Bundle\AcademyBundle\Entity\Ticket, alias: t }
                 join:
                     left:
                         - { join: t.assignedTo, alias: assignedTo }
+                        - { join: t.contact, alias: contact }
+                        - { join: t.account, alias: account }
         columns:
             subject:
                 label: rami.academy.ticket.subject.label
@@ -29,6 +33,10 @@ datagrids:
                 frontend_type: datetime
             assignedTo:
                 label: rami.academy.ticket.assigned_to.label
+            contact:
+                label: rami.academy.ticket.contact.label
+            account:
+                label: rami.academy.ticket.account.label
         sorters:
             columns:
                 subject:
@@ -41,6 +49,10 @@ datagrids:
                     data_name: t.createdAt
                 assignedTo:
                     data_name: assignedTo.lastName
+                contact:
+                    data_name: contact.lastName
+                account:
+                    data_name: account.name
             default:
                 createdAt: DESC
         filters:
@@ -68,6 +80,12 @@ datagrids:
                 assignedTo:
                     type: string
                     data_name: assignedTo.lastName
+                contact:
+                    type: string
+                    data_name: contact.lastName
+                account:
+                    type: string
+                    data_name: account.name
                 createdAt:
                     type: datetime
                     data_name: t.createdAt

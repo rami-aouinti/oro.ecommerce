@@ -2,6 +2,8 @@
 
 namespace Rami\Bundle\AcademyBundle\Form\Type;
 
+use Oro\Bundle\AccountBundle\Entity\Account;
+use Oro\Bundle\ContactBundle\Entity\Contact;
 use Oro\Bundle\UserBundle\Entity\User;
 use Rami\Bundle\AcademyBundle\Entity\Ticket;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -31,6 +33,25 @@ class TicketType extends AbstractType
                 'label' => 'rami.academy.ticket.description.label',
                 'required' => false,
             ])
+            ->add('status', ChoiceType::class, [
+                'label' => 'rami.academy.ticket.status.label',
+                'choices' => [
+                    'New' => Ticket::STATUS_NEW,
+                    'In progress' => Ticket::STATUS_IN_PROGRESS,
+                    'Resolved' => Ticket::STATUS_RESOLVED,
+                    'Closed' => Ticket::STATUS_CLOSED,
+                ],
+                'constraints' => [
+                    new Choice([
+                        'choices' => [
+                            Ticket::STATUS_NEW,
+                            Ticket::STATUS_IN_PROGRESS,
+                            Ticket::STATUS_RESOLVED,
+                            Ticket::STATUS_CLOSED,
+                        ],
+                    ]),
+                ],
+            ])
             ->add('priority', ChoiceType::class, [
                 'label' => 'rami.academy.ticket.priority.label',
                 'choices' => [
@@ -54,6 +75,18 @@ class TicketType extends AbstractType
                 'label' => 'rami.academy.ticket.assigned_to.label',
                 'class' => User::class,
                 'choice_label' => 'fullName',
+                'required' => false,
+            ])
+            ->add('contact', EntityType::class, [
+                'label' => 'rami.academy.ticket.contact.label',
+                'class' => Contact::class,
+                'choice_label' => 'fullName',
+                'required' => false,
+            ])
+            ->add('account', EntityType::class, [
+                'label' => 'rami.academy.ticket.account.label',
+                'class' => Account::class,
+                'choice_label' => 'name',
                 'required' => false,
             ]);
     }

@@ -1,0 +1,11 @@
+api:
+    entities:
+        Rami\Bundle\AcademyBundle\Entity\Ticket:
+            documentation_resource: '@RamiAcademyBundle/Resources/doc/api/ticket.md'
+            fields:
+                contact:
+                    target_class: Oro\Bundle\ContactBundle\Entity\Contact
+                    description: Related contact extension point for API consumers.
+                account:
+                    target_class: Oro\Bundle\AccountBundle\Entity\Account
+                    description: Related account extension point for API consumers.

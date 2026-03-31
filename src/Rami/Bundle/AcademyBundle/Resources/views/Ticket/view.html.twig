@@ -36,7 +36,9 @@
                 UI.renderProperty('rami.academy.ticket.status.label'|trans, entity.status),
                 UI.renderProperty('rami.academy.ticket.priority.label'|trans, entity.priority),
                 UI.renderProperty('rami.academy.ticket.created_at.label'|trans, entity.createdAt ? entity.createdAt|oro_format_datetime : '—'),
-                UI.renderProperty('rami.academy.ticket.assigned_to.label'|trans, entity.assignedTo ? entity.assignedTo.fullName : '—')
+                UI.renderProperty('rami.academy.ticket.assigned_to.label'|trans, entity.assignedTo ? entity.assignedTo.fullName : '—'),
+                UI.renderProperty('rami.academy.ticket.contact.label'|trans, entity.contact ? entity.contact.fullName : '—'),
+                UI.renderProperty('rami.academy.ticket.account.label'|trans, entity.account ? entity.account.name : '—')
             ]
         }]
     }] %}

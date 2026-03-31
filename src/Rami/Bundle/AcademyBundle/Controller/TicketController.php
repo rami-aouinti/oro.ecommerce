@@ -7,6 +7,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Rami\Bundle\AcademyBundle\Entity\Ticket;
 use Rami\Bundle\AcademyBundle\Form\Type\TicketType;
+use Rami\Bundle\AcademyBundle\Provider\TicketExtensionPointRegistry;
 use Rami\Bundle\AcademyBundle\Service\TicketCreationRulesApplier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,8 +18,10 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/ticket', name: 'oro_rami_academy_ticket_')]
 class TicketController extends AbstractController
 {
-    public function __construct(private readonly TicketCreationRulesApplier $creationRulesApplier)
-    {
+    public function __construct(
+        private readonly TicketCreationRulesApplier $creationRulesApplier,
+        private readonly TicketExtensionPointRegistry $ticketExtensionPointRegistry
+    ) {
     }
 
     #[Route(path: '/', name: 'index')]
@@ -85,6 +88,8 @@ class TicketController extends AbstractController
 
             $entityManager->persist($ticket);
             $entityManager->flush();
+
+            $this->ticketExtensionPointRegistry->publishAsyncNotifications($ticket, $isCreation);
 
             return $this->redirectToRoute('oro_rami_academy_ticket_view', ['id' => $ticket->getId()]);
         }
