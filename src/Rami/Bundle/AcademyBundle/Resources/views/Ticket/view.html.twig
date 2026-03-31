@@ -3,6 +3,7 @@
 {% oro_title_set({params : {'%subject%': entity.subject}}) %}
 
 {% block navButtons %}
+    {{ parent() }}
     {{ UI.button({
         'path': path('oro_rami_academy_ticket_index'),
         'title': 'oro.ui.back'|trans,

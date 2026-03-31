@@ -1,0 +1,77 @@
+workflows:
+  rami_ticket_workflow:
+    label: 'rami.academy.ticket.workflow.label'
+    entity: Rami\Bundle\AcademyBundle\Entity\Ticket
+    start_step: open
+    force_autostart: true
+    steps:
+      open:
+        label: 'rami.academy.ticket.workflow.steps.open.label'
+        allowed_transitions:
+          - start_progress
+      in_progress:
+        label: 'rami.academy.ticket.workflow.steps.in_progress.label'
+        allowed_transitions:
+          - resolve
+          - close
+      resolved:
+        label: 'rami.academy.ticket.workflow.steps.resolved.label'
+        allowed_transitions:
+          - reopen
+          - close
+      closed:
+        label: 'rami.academy.ticket.workflow.steps.closed.label'
+        allowed_transitions:
+          - reopen
+
+    attributes:
+      status:
+        type: string
+        property_path: entity.status
+      assigned_to:
+        type: entity
+        options:
+          class: Oro\Bundle\UserBundle\Entity\User
+        property_path: entity.assignedTo
+
+    transitions:
+      start_progress:
+        label: 'rami.academy.ticket.workflow.transitions.start_progress.label'
+        step_to: in_progress
+        transition_definition: start_progress_definition
+        frontend_options:
+          icon: fa-play
+      resolve:
+        label: 'rami.academy.ticket.workflow.transitions.resolve.label'
+        step_to: resolved
+        transition_definition: resolve_definition
+        frontend_options:
+          icon: fa-check
+      close:
+        label: 'rami.academy.ticket.workflow.transitions.close.label'
+        step_to: closed
+        transition_definition: close_definition
+        frontend_options:
+          icon: fa-times
+      reopen:
+        label: 'rami.academy.ticket.workflow.transitions.reopen.label'
+        step_to: in_progress
+        transition_definition: reopen_definition
+        frontend_options:
+          icon: fa-undo
+
+    transition_definitions:
+      start_progress_definition:
+        conditions:
+          '@not_empty': $.assigned_to
+        actions:
+          - '@assign_value': [$.status, 'in_progress']
+      resolve_definition:
+        actions:
+          - '@assign_value': [$.status, 'resolved']
+      close_definition:
+        actions:
+          - '@assign_value': [$.status, 'closed']
+      reopen_definition:
+        actions:
+          - '@assign_value': [$.status, 'in_progress']

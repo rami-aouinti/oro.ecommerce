@@ -31,25 +31,6 @@ class TicketType extends AbstractType
                 'label' => 'rami.academy.ticket.description.label',
                 'required' => false,
             ])
-            ->add('status', ChoiceType::class, [
-                'label' => 'rami.academy.ticket.status.label',
-                'choices' => [
-                    'New' => Ticket::STATUS_NEW,
-                    'In progress' => Ticket::STATUS_IN_PROGRESS,
-                    'Resolved' => Ticket::STATUS_RESOLVED,
-                    'Closed' => Ticket::STATUS_CLOSED,
-                ],
-                'constraints' => [
-                    new Choice([
-                        'choices' => [
-                            Ticket::STATUS_NEW,
-                            Ticket::STATUS_IN_PROGRESS,
-                            Ticket::STATUS_RESOLVED,
-                            Ticket::STATUS_CLOSED,
-                        ],
-                    ]),
-                ],
-            ])
             ->add('priority', ChoiceType::class, [
                 'label' => 'rami.academy.ticket.priority.label',
                 'choices' => [
