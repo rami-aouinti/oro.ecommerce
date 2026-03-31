@@ -7,6 +7,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Rami\Bundle\AcademyBundle\Entity\Ticket;
 use Rami\Bundle\AcademyBundle\Form\Type\TicketType;
+use Rami\Bundle\AcademyBundle\Service\TicketCreationRulesApplier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,10 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/ticket', name: 'oro_rami_academy_ticket_')]
 class TicketController extends AbstractController
 {
+    public function __construct(private readonly TicketCreationRulesApplier $creationRulesApplier)
+    {
+    }
+
     #[Route(path: '/', name: 'index')]
     #[Acl(id: 'oro_rami_academy_ticket_view', type: 'entity', class: Ticket::class, permission: 'VIEW')]
     public function indexAction(): Response
@@ -36,7 +41,10 @@ class TicketController extends AbstractController
     #[Acl(id: 'oro_rami_academy_ticket_create', type: 'entity', class: Ticket::class, permission: 'CREATE')]
     public function createAction(Request $request, ManagerRegistry $registry): Response
     {
-        return $this->handleForm($request, new Ticket(), $registry->getManagerForClass(Ticket::class));
+        $ticket = new Ticket();
+        $this->creationRulesApplier->applyInitialValues($ticket);
+
+        return $this->handleForm($request, $ticket, $registry->getManagerForClass(Ticket::class), true);
     }
 
     #[Route(path: '/update/{id}', name: 'update', requirements: ['id' => '\\d+'])]
@@ -56,7 +64,12 @@ class TicketController extends AbstractController
         return new JsonResponse(['successful' => true]);
     }
 
-    private function handleForm(Request $request, Ticket $ticket, ?EntityManagerInterface $entityManager): Response
+    private function handleForm(
+        Request $request,
+        Ticket $ticket,
+        ?EntityManagerInterface $entityManager,
+        bool $isCreation = false
+    ): Response
     {
         if (!$entityManager instanceof EntityManagerInterface) {
             throw $this->createNotFoundException('Entity manager not found for Ticket entity.');
@@ -66,6 +79,10 @@ class TicketController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($isCreation) {
+                $this->creationRulesApplier->applyBusinessRules($ticket);
+            }
+
             $entityManager->persist($ticket);
             $entityManager->flush();
 
