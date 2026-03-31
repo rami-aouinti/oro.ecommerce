@@ -1,0 +1,2 @@
+bundles:
+    - { name: Rami\Bundle\AcademyBundle\RamiAcademyBundle, priority: 100 }
