@@ -48,3 +48,23 @@ rami:
             label: Close
           reopen:
             label: Reopen
+    system_configuration:
+      groups:
+        ticket_settings:
+          title: Ticket settings
+      fields:
+        default_sla_hours:
+          label: Default SLA (hours)
+          tooltip: Default SLA target (in hours) used for new tickets.
+        default_priority:
+          label: Default priority
+          tooltip: Initial priority preselected when creating a ticket.
+        notifications_enabled:
+          label: Enable notifications
+          tooltip: Enable business notification rules during ticket creation.
+      choices:
+        priority:
+          low: Low
+          medium: Medium
+          high: High
+          urgent: Urgent

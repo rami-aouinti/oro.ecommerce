@@ -3,3 +3,11 @@ services:
         autowire: true
         autoconfigure: true
         public: false
+
+    Rami\Bundle\AcademyBundle\:
+        resource: '../../*'
+        exclude: '../../{DependencyInjection,Entity,Migrations,Resources,Tests}'
+
+    Rami\Bundle\AcademyBundle\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']

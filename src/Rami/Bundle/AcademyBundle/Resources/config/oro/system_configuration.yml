@@ -1,0 +1,49 @@
+system_configuration:
+    groups:
+        rami_academy_ticket_settings:
+            title: rami.academy.system_configuration.groups.ticket_settings.title
+
+    fields:
+        rami_academy.default_sla_hours:
+            data_type: integer
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigIntegerType
+            options:
+                label: rami.academy.system_configuration.fields.default_sla_hours.label
+                tooltip: rami.academy.system_configuration.fields.default_sla_hours.tooltip
+                required: true
+                constraints:
+                    - NotBlank: ~
+                    - Range:
+                        min: 1
+                        max: 720
+        rami_academy.default_priority:
+            data_type: string
+            type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
+            options:
+                label: rami.academy.system_configuration.fields.default_priority.label
+                tooltip: rami.academy.system_configuration.fields.default_priority.tooltip
+                required: true
+                choices:
+                    rami.academy.system_configuration.choices.priority.low: low
+                    rami.academy.system_configuration.choices.priority.medium: medium
+                    rami.academy.system_configuration.choices.priority.high: high
+                    rami.academy.system_configuration.choices.priority.urgent: urgent
+        rami_academy.notifications_enabled:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: rami.academy.system_configuration.fields.notifications_enabled.label
+                tooltip: rami.academy.system_configuration.fields.notifications_enabled.tooltip
+                required: false
+
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    general_setup:
+                        children:
+                            rami_academy_ticket_settings:
+                                children:
+                                    - rami_academy.default_sla_hours
+                                    - rami_academy.default_priority
+                                    - rami_academy.notifications_enabled
