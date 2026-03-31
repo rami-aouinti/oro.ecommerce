@@ -3,11 +3,13 @@
 {% oro_title_set({params : {'%entityName%': 'rami.academy.ticket.entity_plural_label'|trans}}) %}
 
 {% block navButtons %}
-    <div class="btn-group">
-        <a href="{{ path('oro_rami_academy_ticket_create') }}" class="btn btn-primary">
-            {{ 'oro.ui.create_entity'|trans({'%entityName%': 'rami.academy.ticket.entity_label'|trans}) }}
-        </a>
-    </div>
+    {% if is_granted('oro_rami_academy_ticket_create') %}
+        <div class="btn-group">
+            <a href="{{ path('oro_rami_academy_ticket_create') }}" class="btn btn-primary">
+                {{ 'oro.ui.create_entity'|trans({'%entityName%': 'rami.academy.ticket.entity_label'|trans}) }}
+            </a>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block pageHeader %}

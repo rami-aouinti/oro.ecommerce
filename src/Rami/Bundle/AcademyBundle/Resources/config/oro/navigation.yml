@@ -1,0 +1,21 @@
+navigation:
+    menu_config:
+        items:
+            rami_academy_ticket_list:
+                label: rami.academy.ticket.entity_plural_label
+                route: oro_rami_academy_ticket_index
+                acl_resource: oro_rami_academy_ticket_view
+                extras:
+                    routes:
+                        - '/^oro_rami_academy_ticket_/'
+                    position: 50
+        tree:
+            application_menu:
+                children:
+                    rami_academy_ticket_list: ~
+
+    titles:
+        oro_rami_academy_ticket_index: rami.academy.ticket.entity_plural_label
+        oro_rami_academy_ticket_view: rami.academy.ticket.entity_label
+        oro_rami_academy_ticket_create: oro.ui.create_entity
+        oro_rami_academy_ticket_update: oro.ui.update_entity

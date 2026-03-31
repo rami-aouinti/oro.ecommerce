@@ -40,7 +40,7 @@ class TicketController extends AbstractController
     }
 
     #[Route(path: '/update/{id}', name: 'update', requirements: ['id' => '\\d+'])]
-    #[Acl(id: 'oro_rami_academy_ticket_update', type: 'entity', class: Ticket::class, permission: 'EDIT')]
+    #[Acl(id: 'oro_rami_academy_ticket_edit', type: 'entity', class: Ticket::class, permission: 'EDIT')]
     public function updateAction(Request $request, Ticket $ticket, ManagerRegistry $registry): Response
     {
         return $this->handleForm($request, $ticket, $registry->getManagerForClass(Ticket::class));
