@@ -1,0 +1,46 @@
+{% extends '@OroUI/actions/view.html.twig' %}
+
+{% oro_title_set({params : {'%subject%': entity.subject}}) %}
+
+{% block navButtons %}
+    {{ UI.button({
+        'path': path('oro_rami_academy_ticket_index'),
+        'title': 'oro.ui.back'|trans,
+        'label': 'oro.ui.back'|trans
+    }) }}
+    {{ UI.editButton({
+        'path': path('oro_rami_academy_ticket_update', {id: entity.id}),
+        'entity_label': 'rami.academy.ticket.entity_label'|trans
+    }) }}
+{% endblock %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'indexPath': path('oro_rami_academy_ticket_index'),
+        'indexLabel': 'rami.academy.ticket.entity_plural_label'|trans,
+        'entityTitle': entity.subject
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content_data %}
+    {% set dataBlocks = [{
+        'title': 'General'|trans,
+        'class': 'active',
+        'subblocks': [{
+            'title': null,
+            'data': [
+                UI.renderProperty('rami.academy.ticket.subject.label'|trans, entity.subject),
+                UI.renderHtmlProperty('rami.academy.ticket.description.label'|trans, entity.description|default('—')),
+                UI.renderProperty('rami.academy.ticket.status.label'|trans, entity.status),
+                UI.renderProperty('rami.academy.ticket.priority.label'|trans, entity.priority),
+                UI.renderProperty('rami.academy.ticket.created_at.label'|trans, entity.createdAt ? entity.createdAt|oro_format_datetime : '—'),
+                UI.renderProperty('rami.academy.ticket.assigned_to.label'|trans, entity.assignedTo ? entity.assignedTo.fullName : '—')
+            ]
+        }]
+    }] %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+
+    {{ parent() }}
+{% endblock %}

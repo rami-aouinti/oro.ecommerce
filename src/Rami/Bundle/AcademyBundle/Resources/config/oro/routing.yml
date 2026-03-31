@@ -1,0 +1,4 @@
+oro_rami_academy_ticket:
+    resource: '@RamiAcademyBundle/Controller/TicketController.php'
+    type: annotation
+    prefix: /academy
