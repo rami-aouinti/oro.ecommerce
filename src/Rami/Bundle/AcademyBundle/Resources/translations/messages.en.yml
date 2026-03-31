@@ -28,3 +28,23 @@ rami:
       assigned_to:
         label: Assigned to
         description: User currently responsible for processing the ticket.
+      workflow:
+        label: Ticket workflow
+        steps:
+          open:
+            label: Open
+          in_progress:
+            label: In progress
+          resolved:
+            label: Resolved
+          closed:
+            label: Closed
+        transitions:
+          start_progress:
+            label: Start progress
+          resolve:
+            label: Resolve
+          close:
+            label: Close
+          reopen:
+            label: Reopen
