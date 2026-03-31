@@ -4,6 +4,16 @@ services:
         autoconfigure: true
         public: false
 
+    _instanceof:
+        Rami\Bundle\AcademyBundle\Extension\TicketApiResourceConfigProviderInterface:
+            tags: ['rami_academy.ticket.api_resource_config_provider']
+
+        Rami\Bundle\AcademyBundle\Extension\TicketImportExportConfigProviderInterface:
+            tags: ['rami_academy.ticket.import_export_config_provider']
+
+        Rami\Bundle\AcademyBundle\Extension\TicketAsyncNotificationPublisherInterface:
+            tags: ['rami_academy.ticket.async_notification_publisher']
+
     Rami\Bundle\AcademyBundle\:
         resource: '../../*'
         exclude: '../../{DependencyInjection,Entity,Migrations,Resources,Tests}'
@@ -11,3 +21,9 @@ services:
     Rami\Bundle\AcademyBundle\Controller\:
         resource: '../../Controller'
         tags: ['controller.service_arguments']
+
+    Rami\Bundle\AcademyBundle\Provider\TicketExtensionPointRegistry:
+        arguments:
+            $apiResourceConfigProviders: !tagged_iterator rami_academy.ticket.api_resource_config_provider
+            $importExportConfigProviders: !tagged_iterator rami_academy.ticket.import_export_config_provider
+            $asyncNotificationPublishers: !tagged_iterator rami_academy.ticket.async_notification_publisher

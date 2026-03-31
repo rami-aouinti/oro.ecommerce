@@ -28,6 +28,12 @@ rami:
       assigned_to:
         label: Assigned to
         description: User currently responsible for processing the ticket.
+      contact:
+        label: Contact
+        description: Related contact for contextual customer communication.
+      account:
+        label: Account
+        description: Related account to align ticket with customer organization.
       workflow:
         label: Ticket workflow
         steps:

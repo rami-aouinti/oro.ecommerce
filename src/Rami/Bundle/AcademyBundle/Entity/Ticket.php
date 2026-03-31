@@ -4,6 +4,8 @@ namespace Rami\Bundle\AcademyBundle\Entity;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\AccountBundle\Entity\Account;
+use Oro\Bundle\ContactBundle\Entity\Contact;
 use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
@@ -138,6 +140,26 @@ class Ticket
     ])]
     private ?User $assignedTo = null;
 
+    #[ORM\ManyToOne(targetEntity: Contact::class)]
+    #[ORM\JoinColumn(name: 'contact_id', referencedColumnName: 'id', onDelete: 'SET NULL', nullable: true)]
+    #[ConfigField(defaultValues: [
+        'entity' => [
+            'label' => 'rami.academy.ticket.contact.label',
+            'description' => 'rami.academy.ticket.contact.description',
+        ],
+    ])]
+    private ?Contact $contact = null;
+
+    #[ORM\ManyToOne(targetEntity: Account::class)]
+    #[ORM\JoinColumn(name: 'account_id', referencedColumnName: 'id', onDelete: 'SET NULL', nullable: true)]
+    #[ConfigField(defaultValues: [
+        'entity' => [
+            'label' => 'rami.academy.ticket.account.label',
+            'description' => 'rami.academy.ticket.account.description',
+        ],
+    ])]
+    private ?Account $account = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -235,6 +257,31 @@ class Ticket
     public function setAssignedTo(?User $assignedTo): self
     {
         $this->assignedTo = $assignedTo;
+
+        return $this;
+    }
+
+
+    public function getContact(): ?Contact
+    {
+        return $this->contact;
+    }
+
+    public function setContact(?Contact $contact): self
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
+
+    public function getAccount(): ?Account
+    {
+        return $this->account;
+    }
+
+    public function setAccount(?Account $account): self
+    {
+        $this->account = $account;
 
         return $this;
     }

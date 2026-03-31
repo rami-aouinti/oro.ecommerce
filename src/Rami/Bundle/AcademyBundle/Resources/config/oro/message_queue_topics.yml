@@ -1,0 +1,8 @@
+oro_message_queue:
+    client:
+        topics:
+            rami.academy.ticket.notification:
+                description: Extension point topic for asynchronous ticket notifications.
+                body:
+                    ticketId: int
+                    isCreation: bool
